@@ -1,0 +1,41 @@
+.app__register-container {
+  width: 100%;
+}
+
+.app__form-row {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.app__form-row label {
+  display: block;
+}
+
+.app__form-row input {
+  width: 100%;
+  font-size: 18px;
+  padding: 4px 2px;
+  outline: none;
+  border: 2px solid transparent;
+  border-color: rgb(5, 70, 5);
+}
+
+.app__form-row button {
+  background-color: green;
+  padding: 5px 10px;
+  font-size: 20px;
+  outline: none;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  transition-duration: 0.4s;
+}
+
+.app__form-row button:hover {
+  background-color: #4caf50; /* Green */
+  color: white;
+}
+
+.error-message {
+  color: red;
+}
