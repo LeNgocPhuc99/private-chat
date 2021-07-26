@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { withRouter } from "react-router";
 
 import { registerRequest } from "../../../services/api-service";
-import { setItemToLS } from "../../../services/storage-service";
-
+import { setItemToSS } from "../../../services/storage-service";
 
 import "./Registration.css";
 
@@ -21,7 +20,7 @@ function Registration(props) {
   };
 
   const registerUser = async () => {
-    // verify 
+    // verify
     var usernameRegex = /^[a-zA-Z0-9]+$/;
     if (!usernameRegex.test(username)) {
       setErrorMessage(
@@ -29,12 +28,13 @@ function Registration(props) {
       );
       return;
     }
-    
+
     // request to server
     const resPayload = await registerRequest(username, password);
-    if(resPayload.code === 200) {
-      setItemToLS("userDetails", resPayload.response);
-      console.log("go home")
+    if (resPayload.code === 200) {
+      setItemToSS("userDetail", resPayload.response);
+      props.history.push(`/home`);
+      console.log("go home");
     } else {
       setErrorMessage(resPayload.message);
     }

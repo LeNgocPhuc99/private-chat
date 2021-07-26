@@ -1,9 +1,9 @@
-export function setItemToLS(key, value) {
-  localStorage.setItem(key, JSON.stringify(value));
+export function setItemToSS(key, value) {
+  sessionStorage.setItem(key, JSON.stringify(value));
 }
 
-export function getItemFormLS(key) {
-  const value = localStorage.getItem(key);
+export function getItemFormSS(key) {
+  const value = sessionStorage.getItem(key);
   if (value) {
     return JSON.parse(value);
   } else {
@@ -11,6 +11,6 @@ export function getItemFormLS(key) {
   }
 }
 
-export function removeItemInLS(key) {
-  localStorage.removeItem(key);
+export function removeItemInSS(key) {
+  sessionStorage.removeItem(key);
 }

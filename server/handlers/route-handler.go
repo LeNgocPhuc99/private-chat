@@ -59,6 +59,8 @@ func Registration(rw http.ResponseWriter, r *http.Request) {
 		Response(rw, r, response)
 	}
 
+	// check existence username
+
 	// query database
 	userObjectID, registrationErr := RegisterQuery(requestPayload)
 	if registrationErr != nil {

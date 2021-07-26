@@ -1,0 +1,53 @@
+.app__home-container {
+    display: flex;
+    width: 60%;
+    margin: auto;
+    flex-direction: column;;
+}
+
+.app__header-container {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    margin-bottom: 50px;
+    margin-top: 20px;
+    border-bottom: 2px solid transparent;
+    border-color: rgb(11, 77, 11);
+    background-color: whitesmoke;
+}
+
+.app__header-user {
+    display: flex;
+}
+
+
+.user-details {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-transform: capitalize;
+}
+
+.logout {
+    background: gray;
+    padding: 2.5px 5px;
+    font-size: 15px;
+    outline: none;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-color: rgb(11, 77, 11);
+    border-radius: 50%;
+}
+
+.app__content-container {
+    display: flex;
+    width: 100%;
+}
+.app__home-chatlist {
+    flex: 1;
+    margin-right: 30px;
+}
+
+.app__home-message {
+    flex: 2;
+}

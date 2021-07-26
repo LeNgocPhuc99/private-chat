@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { withRouter } from "react-router";
 
 import { loginRequest } from "../../../services/api-service";
-import { setItemToLS } from "../../../services/storage-service";
+import { setItemToSS } from "../../../services/storage-service";
 
 import "./Login.css";
 
@@ -20,12 +20,11 @@ function Login(props) {
   };
 
   const loginUser = async () => {
-    // console.log(username);
-    // console.log(password);
     const resPayload = await loginRequest(username, password);
     if (resPayload.code === 200) {
-      setItemToLS("userDetail", resPayload.response);
+      setItemToSS("userDetail", resPayload.response);
       console.log("go home");
+      props.history.push(`/home`);
     } else {
       setErrorMessage(resPayload.message);
     }

@@ -21,11 +21,11 @@ func GetUserByUsername(username string) (User, error) {
 	defer cancel()
 
 	// find user
-	result := collection.FindOne(ctx, bson.M{
+	queryErr := collection.FindOne(ctx, bson.M{
 		"username": username,
 	}).Decode(&user)
 
-	return user, result
+	return user, queryErr
 }
 
 func GetUserByUserID(userID string) (User, error) {
@@ -40,11 +40,11 @@ func GetUserByUserID(userID string) (User, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	result := collection.FindOne(ctx, bson.M{
+	queryErr := collection.FindOne(ctx, bson.M{
 		"_id": docID,
 	}).Decode(&user)
 
-	return user, result
+	return user, queryErr
 }
 
 func UpdateUserStatus(userID string, status string) error {
