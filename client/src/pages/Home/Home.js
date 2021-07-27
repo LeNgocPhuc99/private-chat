@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { withRouter } from "react-router";
 
+import { userLoginCheckRequest } from "../../services/api-service";
 import { getItemFormSS, removeItemInSS } from "../../services/storage-service";
 
 import "./Home.css";
@@ -10,14 +11,26 @@ const useFetch = (props) => {
   const [internalErr, setInternalErr] = useState(null);
   const userDetail = getItemFormSS("userDetail");
 
-  return [userDetail, internalErr];
-};
+  // after render home page
+  useEffect(() => {
+    (async () => {
+      // check userDetail Info
+      if (userDetail === null || userDetail === "") {
+        props.history.push(`/`);
+      } else {
+        // check user's session
+        const isUserLogged = await userLoginCheckRequest(userDetail.userID);
+        if (!isUserLogged.response) {
+          props.history.push(`/`);
+        } else {
+          // connect to web socket
+          console.log("connect to websocket");
+        }
+      }
+    })();
+  }, [props, userDetail]);
 
-const getUsernameInitial = (userDetail) => {
-  if (userDetail && userDetail.username) {
-    return userDetail.username;
-  }
-  return "_";
+  return [userDetail, internalErr];
 };
 
 const getUsername = (userDetail) => {

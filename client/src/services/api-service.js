@@ -19,12 +19,26 @@ export async function registerRequest(username, password) {
   const response = await fetch(`${API_ENDPOINTS}/registration`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       username,
-      password
-    })
+      password,
+    }),
   });
+  return await response.json();
+}
+
+export async function userLoginCheckRequest(userID) {
+  const response = await fetch(
+    `${API_ENDPOINTS}/userLoginCheck/${userID}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
   return await response.json();
 }

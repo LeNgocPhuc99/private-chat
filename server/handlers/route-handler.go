@@ -3,6 +3,9 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
+	"regexp"
+
+	"github.com/gorilla/mux"
 )
 
 func Login(rw http.ResponseWriter, r *http.Request) {
@@ -82,5 +85,39 @@ func Registration(rw http.ResponseWriter, r *http.Request) {
 			},
 		}
 		Response(rw, r, response)
+	}
+}
+
+func UserLoginCheck(rw http.ResponseWriter, r *http.Request) {
+	var IsAlphaNumeric = regexp.MustCompile(`^[A-Za-z0-9]([A-Za-z0-9_-]*[A-Za-z0-9])?$`).MatchString
+	userID := mux.Vars(r)["userID"]
+
+	if !IsAlphaNumeric(userID) {
+		response := APIResponse{
+			Code:     http.StatusBadRequest,
+			Status:   http.StatusText(http.StatusBadRequest),
+			Message:  UserIdIsNotAvailable,
+			Response: false,
+		}
+		Response(rw, r, response)
+	} else {
+		_, err := GetUserByUserID(userID)
+		if err != nil {
+			response := APIResponse{
+				Code:     http.StatusOK,
+				Status:   http.StatusText(http.StatusOK),
+				Message:  YouAreNotLoggedIN,
+				Response: false,
+			}
+			Response(rw, r, response)
+		} else {
+			response := APIResponse{
+				Code:     http.StatusOK,
+				Status:   http.StatusText(http.StatusOK),
+				Message:  YouAreLoggedIN,
+				Response: true,
+			}
+			Response(rw, r, response)
+		}
 	}
 }

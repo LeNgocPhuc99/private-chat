@@ -5,6 +5,7 @@ const (
 	UsernameCantBeEmpty            = "username can't be empty"
 	UsernameIsAvailable            = "username is available."
 	UsernameIsNotAvailable         = "username is not available"
+	UserIdIsNotAvailable           = "userID is not available"
 	PasswordCantBeEmpty            = "password can't be empty"
 	UsernameAndPasswordCantBeEmpty = "username and Password can't be empty"
 	LoginPasswordIsInCorrect       = "your Login Password is incorrect"

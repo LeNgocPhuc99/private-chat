@@ -24,6 +24,7 @@ func NewRoutes() *mux.Router {
 	// route.HandleFunc("/isUsernameAvailable/{username}", myHandler.IsUsernameAvailable)
 	route.HandleFunc("/login", myHandler.Login).Methods(http.MethodPost, http.MethodOptions)
 	route.HandleFunc("/registration", myHandler.Registration).Methods(http.MethodPost, http.MethodOptions)
+	route.HandleFunc("/userLoginCheck/{userID}", myHandler.UserLoginCheck).Methods(http.MethodGet, http.MethodOptions)
 
 	log.Println("Routes are loaded")
 	return route
