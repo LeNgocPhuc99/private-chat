@@ -8,6 +8,7 @@ import (
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/gorilla/websocket"
 )
 
 func NewRoutes() *mux.Router {
@@ -23,8 +24,25 @@ func NewRoutes() *mux.Router {
 
 	// route.HandleFunc("/isUsernameAvailable/{username}", myHandler.IsUsernameAvailable)
 	route.HandleFunc("/login", myHandler.Login).Methods(http.MethodPost, http.MethodOptions)
+
 	route.HandleFunc("/registration", myHandler.Registration).Methods(http.MethodPost, http.MethodOptions)
+
 	route.HandleFunc("/userLoginCheck/{userID}", myHandler.UserLoginCheck).Methods(http.MethodGet, http.MethodOptions)
+
+	route.HandleFunc("/ws/{userID}", func(rw http.ResponseWriter, r *http.Request) {
+		var upgrader = websocket.Upgrader{
+			ReadBufferSize:  1024,
+			WriteBufferSize: 1024,
+			CheckOrigin:     func(r *http.Request) bool { return true },
+		}
+
+		_ = mux.Vars(r)["userID"]
+		_, err := upgrader.Upgrade(rw, r, nil)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+	})
 
 	log.Println("Routes are loaded")
 	return route

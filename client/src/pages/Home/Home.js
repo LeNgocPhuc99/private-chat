@@ -4,6 +4,7 @@ import { withRouter } from "react-router";
 
 import { userLoginCheckRequest } from "../../services/api-service";
 import { getItemFormSS, removeItemInSS } from "../../services/storage-service";
+import { connectToWebSocket } from "../../services/socket-service";
 
 import "./Home.css";
 
@@ -24,7 +25,13 @@ const useFetch = (props) => {
           props.history.push(`/`);
         } else {
           // connect to web socket
-          console.log("connect to websocket");
+          console.log("Connect to server")
+          const connection = connectToWebSocket(userDetail.userID);
+          if(connection.webSocketConnection === null) {
+            setInternalErr(connection.message);
+          } else {
+            console.log("Listing event")
+          }
         }
       }
     })();
