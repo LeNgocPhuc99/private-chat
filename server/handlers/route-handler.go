@@ -121,3 +121,50 @@ func UserLoginCheck(rw http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
+
+func GetAllUserAllOnline(rw http.ResponseWriter, r *http.Request) {
+	userID := mux.Vars(r)["userID"]
+	listOnlineUser, err := GetAllOnlineUser(userID)
+	if err != nil {
+		response := APIResponse{
+			Code:     http.StatusInternalServerError,
+			Status:   http.StatusText(http.StatusInternalServerError),
+			Message:  "Internal Server Error",
+			Response: nil,
+		}
+		Response(rw, r, response)
+	}
+
+	response := APIResponse{
+		Code:     http.StatusOK,
+		Status:   http.StatusText(http.StatusOK),
+		Message:  "Get all online user success",
+		Response: listOnlineUser,
+	}
+
+	Response(rw, r, response)
+}
+
+func GetMessages(rw http.ResponseWriter, r *http.Request) {
+	fromUserID := mux.Vars(r)["fromUserID"]
+	toUserID := mux.Vars(r)["toUserID"]
+
+	conversations, err := GetConversationBetweenTwoUsers(fromUserID, toUserID)
+	if err != nil {
+		response := APIResponse{
+			Code:     http.StatusInternalServerError,
+			Status:   http.StatusText(http.StatusInternalServerError),
+			Message:  "Internal Server Error",
+			Response: nil,
+		}
+		Response(rw, r, response)
+	}
+
+	response := APIResponse{
+		Code:     http.StatusOK,
+		Status:   http.StatusText(http.StatusOK),
+		Message:  "Get Conversaion susscess",
+		Response: conversations,
+	}
+	Response(rw, r, response)
+}

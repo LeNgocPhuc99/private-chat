@@ -1,6 +1,6 @@
 package handlers
 
-// mapping user detail
+// user documents
 type User struct {
 	ID       string `bson:"_id,omitempty"`
 	Username string
@@ -9,7 +9,8 @@ type User struct {
 	SocketID string
 }
 
-type Conversations struct {
+// conversation documents
+type Conversation struct {
 	ID         string `json:"id" bson:"_id,omitempty"`
 	Message    string `json:"message"`
 	ToUserID   string `json:"toUserID"`
@@ -33,8 +34,8 @@ type UserResponse struct {
 }
 
 type SocketEvent struct {
-	EventName    string `json:"eventStruct"`
-	EventPayload string `json:"eventPayload"`
+	EventName    string      `json:"eventName"`
+	EventPayload interface{} `json:"eventPayload"`
 }
 
 type MessagePayload struct {

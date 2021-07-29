@@ -13,3 +13,14 @@ func NewHub() *Hub {
 		unregister: make(chan *Client),
 	}
 }
+
+func (hub *Hub) Run() {
+	for {
+		select {
+		case client := <-hub.register:
+			HandleUserJoinEvent(hub, client)
+		case client := <-hub.unregister:
+			HandleUserDisconnectEvent(hub, client)
+		}
+	}
+}

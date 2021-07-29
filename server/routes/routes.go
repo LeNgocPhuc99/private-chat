@@ -13,6 +13,11 @@ import (
 
 func NewRoutes() *mux.Router {
 	log.Println("Loading Routes...")
+
+	// run hub
+	hub := myHandler.NewHub()
+	go hub.Run()
+
 	route := mux.NewRouter()
 	cors := handlers.CORS(
 		handlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
@@ -29,6 +34,10 @@ func NewRoutes() *mux.Router {
 
 	route.HandleFunc("/userLoginCheck/{userID}", myHandler.UserLoginCheck).Methods(http.MethodGet, http.MethodOptions)
 
+	route.HandleFunc("/getAllOnlineUser/{userID}", myHandler.GetAllUserAllOnline).Methods(http.MethodGet, http.MethodOptions)
+
+	route.HandleFunc("/getConversation/{fromUserID}/toUserID", myHandler.GetMessages).Methods(http.MethodGet, http.MethodOptions)
+
 	route.HandleFunc("/ws/{userID}", func(rw http.ResponseWriter, r *http.Request) {
 		var upgrader = websocket.Upgrader{
 			ReadBufferSize:  1024,
@@ -36,12 +45,14 @@ func NewRoutes() *mux.Router {
 			CheckOrigin:     func(r *http.Request) bool { return true },
 		}
 
-		_ = mux.Vars(r)["userID"]
-		_, err := upgrader.Upgrade(rw, r, nil)
+		userID := mux.Vars(r)["userID"]
+		connection, err := upgrader.Upgrade(rw, r, nil)
 		if err != nil {
 			log.Println(err)
 			return
 		}
+
+		myHandler.CreateUserWebSocket(hub, connection, userID)
 	})
 
 	log.Println("Routes are loaded")

@@ -12,6 +12,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+// user collection
+
 func GetUserByUsername(username string) (User, error) {
 	var user User
 
@@ -159,4 +161,75 @@ func GetAllOnlineUser(userID string) ([]UserResponse, error) {
 	}
 
 	return onlineUser, nil
+}
+
+// message collection
+
+func StoreMessage(messagePayload MessagePayload) bool {
+
+	collection := database.DBClient.Database(os.Getenv("MONGODB_DATABASE")).Collection("messages")
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	_, queryErr := collection.InsertOne(ctx, bson.M{
+		"fromUserID": messagePayload.FromUserID,
+		"toUserID":   messagePayload.ToUserID,
+		"message":    messagePayload.Message,
+	})
+
+	return queryErr == nil
+}
+
+func GetConversationBetweenTwoUsers(fromUserID, toUserID string) ([]Conversation, error) {
+	var conversations []Conversation
+
+	collection := database.DBClient.Database("MONGODB_DATABASE").Collection("message")
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	queryCondition := bson.M{
+		"$or": []bson.M{
+			{
+				"$and": []bson.M{
+					{
+						"fromUserID": fromUserID,
+					},
+					{
+						"toUserID": toUserID,
+					},
+				},
+			},
+			{
+				"$and": []bson.M{
+					{
+						"fromUserID": toUserID,
+					},
+					{
+						"toUserID": fromUserID,
+					},
+				},
+			},
+		},
+	}
+
+	cursor, queryErr := collection.Find(ctx, queryCondition)
+	if queryErr != nil {
+		return nil, queryErr
+	}
+
+	for cursor.Next(context.TODO()) {
+		var conversation Conversation
+		err := cursor.Decode(&conversation)
+
+		if err != nil {
+			conversations = append(conversations, Conversation{
+				ID:         conversation.ID,
+				FromUserID: conversation.FromUserID,
+				ToUserID:   conversation.ToUserID,
+				Message:    conversation.Message,
+			})
+		}
+	}
+
+	return conversations, nil
 }

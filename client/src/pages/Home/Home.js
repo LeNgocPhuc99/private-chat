@@ -4,7 +4,12 @@ import { withRouter } from "react-router";
 
 import { userLoginCheckRequest } from "../../services/api-service";
 import { getItemFormSS, removeItemInSS } from "../../services/storage-service";
-import { connectToWebSocket } from "../../services/socket-service";
+import {
+  connectToWebSocket,
+  listenToWebSocketEvents,
+  emitLogoutEvent,
+} from "../../services/socket-service";
+import ChatList from "./ChatList/ChatList";
 
 import "./Home.css";
 
@@ -25,12 +30,13 @@ const useFetch = (props) => {
           props.history.push(`/`);
         } else {
           // connect to web socket
-          console.log("Connect to server")
+          console.log("Connect to server");
           const connection = connectToWebSocket(userDetail.userID);
-          if(connection.webSocketConnection === null) {
+          if (connection.webSocketConnection === null) {
             setInternalErr(connection.message);
           } else {
-            console.log("Listing event")
+            console.log("Listing event");
+            listenToWebSocketEvents();
           }
         }
       }
@@ -52,12 +58,14 @@ const logoutUser = (props, userDetail) => {
   if (userDetail.userID) {
     removeItemInSS("userDetail");
     // websocket event
+    emitLogoutEvent();
     props.history.push(`/`);
   }
 };
 
 function Home(props) {
   const [userDetail, internalErr] = useFetch(props);
+  const [selectedUser, setSelectedUser] = useState(null);
   if (internalErr !== null) {
     return <h1>{internalErr}</h1>;
   }
@@ -81,7 +89,14 @@ function Home(props) {
       </header>
 
       <div className="app__content-container">
-        <div className="app__hone-chatlist"></div>
+        <div className="app__hone-chatlist">
+          <ChatList
+            setSelectedUser={(user) => {
+              setSelectedUser(user);
+            }}
+            userDetail={userDetail}
+          />
+        </div>
 
         <div className="app__home-message"></div>
       </div>
