@@ -10,6 +10,7 @@ import {
   emitLogoutEvent,
 } from "../../services/socket-service";
 import ChatList from "./ChatList/ChatList";
+import Conversation from "./Conversation/Conversation";
 
 import "./Home.css";
 
@@ -98,7 +99,9 @@ function Home(props) {
           />
         </div>
 
-        <div className="app__home-message"></div>
+        <div className="app__home-message">
+          <Conversation userDetail={userDetail} selectedUser={selectedUser} />
+        </div>
       </div>
     </div>
   );

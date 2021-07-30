@@ -172,9 +172,9 @@ func StoreMessage(messagePayload MessagePayload) bool {
 	defer cancel()
 
 	_, queryErr := collection.InsertOne(ctx, bson.M{
-		"fromUserID": messagePayload.FromUserID,
-		"toUserID":   messagePayload.ToUserID,
 		"message":    messagePayload.Message,
+		"toUserID":   messagePayload.ToUserID,
+		"fromUserID": messagePayload.FromUserID,
 	})
 
 	return queryErr == nil
@@ -183,45 +183,47 @@ func StoreMessage(messagePayload MessagePayload) bool {
 func GetConversationBetweenTwoUsers(fromUserID, toUserID string) ([]Conversation, error) {
 	var conversations []Conversation
 
-	collection := database.DBClient.Database("MONGODB_DATABASE").Collection("message")
+	collection := database.DBClient.Database(os.Getenv("MONGODB_DATABASE")).Collection("messages")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	queryCondition := bson.M{
-		"$or": []bson.M{
-			{
-				"$and": []bson.M{
-					{
-						"fromUserID": fromUserID,
-					},
-					{
-						"toUserID": toUserID,
-					},
-				},
-			},
-			{
-				"$and": []bson.M{
-					{
-						"fromUserID": toUserID,
-					},
-					{
-						"toUserID": fromUserID,
-					},
-				},
-			},
-		},
-	}
+	// queryCondition := bson.M{
+	// 	"$or": []bson.M{
+	// 		{
+	// 			"$and": []bson.M{
+	// 				{
+	// 					"toUserID": toUserID,
+	// 				},
+	// 				{
+	// 					"fromUserID": fromUserID,
+	// 				},
+	// 			},
+	// 		},
+	// 		{
+	// 			"$and": []bson.M{
+	// 				{
+	// 					"toUserID": fromUserID,
+	// 				},
+	// 				{
+	// 					"fromUserID": toUserID,
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
 
-	cursor, queryErr := collection.Find(ctx, queryCondition)
-	if queryErr != nil {
-		return nil, queryErr
+	cursor, queryError := collection.Find(ctx, bson.M{})
+
+	if queryError != nil {
+		return nil, queryError
 	}
 
 	for cursor.Next(context.TODO()) {
+		//Create a value into which the single document can be decoded
 		var conversation Conversation
 		err := cursor.Decode(&conversation)
 
-		if err != nil {
+		if err == nil {
 			conversations = append(conversations, Conversation{
 				ID:         conversation.ID,
 				FromUserID: conversation.FromUserID,
@@ -230,6 +232,5 @@ func GetConversationBetweenTwoUsers(fromUserID, toUserID string) ([]Conversation
 			})
 		}
 	}
-
 	return conversations, nil
 }

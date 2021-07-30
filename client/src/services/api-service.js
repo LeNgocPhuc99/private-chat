@@ -30,8 +30,19 @@ export async function registerRequest(username, password) {
 }
 
 export async function userLoginCheckRequest(userID) {
+  const response = await fetch(`${API_ENDPOINTS}/userLoginCheck/${userID}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return await response.json();
+}
+
+export async function getConversationBetweenUsers(fromUserID, toUserID) {
   const response = await fetch(
-    `${API_ENDPOINTS}/userLoginCheck/${userID}`,
+    `${API_ENDPOINTS}/getConversation/${fromUserID}/${toUserID}`,
     {
       method: "GET",
       headers: {
@@ -40,5 +51,5 @@ export async function userLoginCheckRequest(userID) {
     }
   );
 
-  return await response.json();
+  return response.json();
 }

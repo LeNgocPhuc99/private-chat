@@ -55,8 +55,16 @@ export function listenToWebSocketEvents() {
           }
           eventEmitter.emit("chatlist-response", socketPayload.eventPayload);
           break;
+
+        case "message-response":
+          if (!socketPayload.eventPayload) {
+            return;
+          }
+          eventEmitter.emit("message-response", socketPayload.eventPayload);
+          break;
         default:
           console.log("default case");
+          break;
       }
     } catch (error) {
       console.log(error);
@@ -65,7 +73,7 @@ export function listenToWebSocketEvents() {
   };
 }
 
-export function sendMessage(messagePayload) {
+export function sendWebSocketMessage(messagePayload) {
   if (webSocketConnection === null) {
     return;
   }

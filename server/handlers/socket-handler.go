@@ -158,7 +158,26 @@ func handleSocketEvent(client *Client, eventPayload SocketEvent) {
 	case "message":
 		log.Println("Message Event")
 		// creat message payload
-		// store message
-		// send message to toUser
+		message := (eventPayload.EventPayload.(map[string]interface{})["message"]).(string)
+		fromUserID := (eventPayload.EventPayload.(map[string]interface{})["fromUserID"]).(string)
+		toUSerID := (eventPayload.EventPayload.(map[string]interface{})["toUserID"]).(string)
+
+		if message != "" && fromUserID != "" && toUSerID != "" {
+			// store message
+			messagePayload := MessagePayload{
+				Message:    message,
+				ToUserID:   toUSerID,
+				FromUserID: fromUserID,
+			}
+			StoreMessage(messagePayload)
+
+			// send message to toUser
+			socketPayload := SocketEvent{
+				EventName:    "message-response",
+				EventPayload: messagePayload,
+			}
+			SendToSpecificClient(client.hub, socketPayload, toUSerID)
+		}
+
 	}
 }

@@ -36,7 +36,7 @@ func NewRoutes() *mux.Router {
 
 	route.HandleFunc("/getAllOnlineUser/{userID}", myHandler.GetAllUserAllOnline).Methods(http.MethodGet, http.MethodOptions)
 
-	route.HandleFunc("/getConversation/{fromUserID}/toUserID", myHandler.GetMessages).Methods(http.MethodGet, http.MethodOptions)
+	route.HandleFunc("/getConversation/{fromUserID}/{toUserID}", myHandler.GetMessages).Methods(http.MethodGet, http.MethodOptions)
 
 	route.HandleFunc("/ws/{userID}", func(rw http.ResponseWriter, r *http.Request) {
 		var upgrader = websocket.Upgrader{

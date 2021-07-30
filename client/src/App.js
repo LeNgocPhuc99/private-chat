@@ -1,13 +1,9 @@
-import './App.css';
+import "./App.css";
 
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import Authentication from './pages/Authentication/Authentication';
-import Home from './pages/Home/Home';
+import Authentication from "./pages/Authentication/Authentication";
+import Home from "./pages/Home/Home";
 
 function App() {
   return (

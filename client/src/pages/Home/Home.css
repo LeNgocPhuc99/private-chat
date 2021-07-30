@@ -1,4 +1,5 @@
 .app__home-container {
+    background-color: whitesmoke;
     display: flex;
     width: 60%;
     margin: auto;

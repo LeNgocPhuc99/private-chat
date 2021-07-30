@@ -39,7 +39,7 @@ type SocketEvent struct {
 }
 
 type MessagePayload struct {
-	FromUserID string `json:"fromUserID"`
-	ToUserID   string `json:"toUserID"`
 	Message    string `json:"message"`
+	ToUserID   string `json:"toUserID"`
+	FromUserID string `json:"fromUserID"`
 }
