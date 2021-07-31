@@ -187,32 +187,25 @@ func GetConversationBetweenTwoUsers(fromUserID, toUserID string) ([]Conversation
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	// queryCondition := bson.M{
-	// 	"$or": []bson.M{
-	// 		{
-	// 			"$and": []bson.M{
-	// 				{
-	// 					"toUserID": toUserID,
-	// 				},
-	// 				{
-	// 					"fromUserID": fromUserID,
-	// 				},
-	// 			},
-	// 		},
-	// 		{
-	// 			"$and": []bson.M{
-	// 				{
-	// 					"toUserID": fromUserID,
-	// 				},
-	// 				{
-	// 					"fromUserID": toUserID,
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
+	queryCondition := bson.M{
 
-	cursor, queryError := collection.Find(ctx, bson.M{})
+		"$or": []bson.M{
+			{
+				"$and": []bson.M{
+					{"fromUserID": fromUserID},
+					{"toUserID": toUserID},
+				},
+			},
+			{
+				"$and": []bson.M{
+					{"fromUserID": toUserID},
+					{"toUserID": fromUserID},
+				},
+			},
+		},
+	}
+
+	cursor, queryError := collection.Find(ctx, queryCondition)
 
 	if queryError != nil {
 		return nil, queryError
