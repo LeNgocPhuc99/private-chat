@@ -47,6 +47,7 @@ export function listenToWebSocketEvents() {
             return;
           }
           eventEmitter.emit("chatlist-response", socketPayload.eventPayload);
+
           break;
 
         case "disconnect":
@@ -54,16 +55,19 @@ export function listenToWebSocketEvents() {
             return;
           }
           eventEmitter.emit("chatlist-response", socketPayload.eventPayload);
+
           break;
 
         case "message-response":
           if (!socketPayload.eventPayload) {
             return;
           }
+          console.log(event);
+          console.log("emit message response");
           eventEmitter.emit("message-response", socketPayload.eventPayload);
           break;
+
         default:
-          console.log("default case");
           break;
       }
     } catch (error) {
@@ -84,6 +88,7 @@ export function sendWebSocketMessage(messagePayload) {
       eventPayload: messagePayload,
     })
   );
+  console.log("send message");
 }
 
 export function emitLogoutEvent() {

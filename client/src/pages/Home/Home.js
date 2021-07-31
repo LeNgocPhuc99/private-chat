@@ -67,6 +67,7 @@ const logoutUser = (props, userDetail) => {
 function Home(props) {
   const [userDetail, internalErr] = useFetch(props);
   const [selectedUser, setSelectedUser] = useState(null);
+  
   if (internalErr !== null) {
     return <h1>{internalErr}</h1>;
   }

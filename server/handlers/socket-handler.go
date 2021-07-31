@@ -15,25 +15,31 @@ func CreateUserWebSocket(hub *Hub, connection *websocket.Conn, userID string) {
 		writeKill: make(chan bool),
 	}
 
-	client.hub.register <- client
-
 	go client.read()
 	go client.write()
+
+	client.hub.register <- client
 
 }
 
 func HandleUserJoinEvent(hub *Hub, client *Client) {
-	hub.clients[client] = true
-	handleSocketEvent(client, SocketEvent{
-		EventName:    "join",
-		EventPayload: client.userID,
-	})
+	if !checkExistConnection(hub, client) {
+		log.Println("Join Event")
+		hub.clients[client] = true
+		log.Println("Number Connection:", len(hub.clients))
+		handleSocketEvent(client, SocketEvent{
+			EventName:    "join",
+			EventPayload: client.userID,
+		})
+	}
 }
 
 func HandleUserDisconnectEvent(hub *Hub, client *Client) {
 	if _, ok := hub.clients[client]; ok {
+		log.Println("Disconnect Event")
 		delete(hub.clients, client)
 		close(client.send)
+		log.Println("Number Connection:", len(hub.clients))
 		handleSocketEvent(client, SocketEvent{
 			EventName:    "disconnect",
 			EventPayload: client.userID,
@@ -68,6 +74,9 @@ func BroadcastToAllExceptMe(hub *Hub, payload SocketEvent, myUserID string) {
 func SendToSpecificClient(hub *Hub, payload SocketEvent, userID string) {
 	for client := range hub.clients {
 		if client.userID == userID {
+			if payload.EventName == "message-response" {
+				log.Println("Send to: ", userID)
+			}
 			select {
 			case client.send <- payload:
 			default:
@@ -86,7 +95,6 @@ func handleSocketEvent(client *Client, eventPayload SocketEvent) {
 	}
 	switch eventPayload.EventName {
 	case "join":
-		log.Println("Join Event")
 		// check user's status
 		userID := (eventPayload.EventPayload).(string)
 		userDetail, err := GetUserByUserID(userID)
@@ -130,8 +138,6 @@ func handleSocketEvent(client *Client, eventPayload SocketEvent) {
 		}
 
 	case "disconnect":
-		log.Println("Disconnect Event")
-
 		userID := (eventPayload.EventPayload).(string)
 		userDetail, err := GetUserByUserID(userID)
 		if err != nil {
@@ -156,12 +162,12 @@ func handleSocketEvent(client *Client, eventPayload SocketEvent) {
 		BroadcastToAll(client.hub, userDisconnectedPayload)
 
 	case "message":
-		log.Println("Message Event")
+
 		// creat message payload
 		message := (eventPayload.EventPayload.(map[string]interface{})["message"]).(string)
 		fromUserID := (eventPayload.EventPayload.(map[string]interface{})["fromUserID"]).(string)
 		toUSerID := (eventPayload.EventPayload.(map[string]interface{})["toUserID"]).(string)
-
+		log.Println("Receive message from: ", fromUserID)
 		if message != "" && fromUserID != "" && toUSerID != "" {
 			// store message
 			messagePayload := MessagePayload{
@@ -180,4 +186,13 @@ func handleSocketEvent(client *Client, eventPayload SocketEvent) {
 		}
 
 	}
+}
+
+func checkExistConnection(hub *Hub, client *Client) bool {
+	for c := range hub.clients {
+		if client.userID == c.userID {
+			return true
+		}
+	}
+	return false
 }

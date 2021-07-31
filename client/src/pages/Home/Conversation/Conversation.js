@@ -37,6 +37,7 @@ const getMessageUI = (messageContainer, userDetail, conversations) => {
           }`}
           key={index}
         >
+         
           {conversation.message}
         </li>
       ))}
@@ -73,10 +74,10 @@ function Conversation(props) {
           userDetail.userID,
           selectedUser.userID
         );
-        console.log(conversationResponse.response);
         updateMessageLoading(false);
         if (conversationResponse.response) {
           updateConversation(conversationResponse.response);
+          // console.log("Load:", conversationResponse.response);
         } else if (conversationResponse.response === null) {
           updateConversation([]);
         }
