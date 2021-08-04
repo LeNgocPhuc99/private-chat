@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router";
+import { DebounceInput } from "react-debounce-input";
+import { Form, Button } from "react-bootstrap";
 
 import { registerRequest } from "../../../services/api-service";
 import { setItemToSS } from "../../../services/storage-service";
-
-import "./Registration.css";
 
 function Registration(props) {
   const [registrationErrorMessage, setErrorMessage] = useState(null);
@@ -41,30 +41,32 @@ function Registration(props) {
   };
 
   return (
-    <div className="app__register-container">
-      <div className="app__form-row">
-        <label>Username:</label>
-        <input type="email" className="email" onChange={handleUsernameChange} />
-      </div>
+    <>
+      <Form className="auth-form">
+        <Form.Group className="mb-3" controlId="formUsername">
+          <DebounceInput
+            className="form-control"
+            placeholder="Enter username"
+            minLength={2}
+            maxLength={10}
+            debounceTimeout={300}
+            onChange={handleUsernameChange}
+          />
+        </Form.Group>
 
-      <div className="app__form-row">
-        <label>Password:</label>
-        <input
-          type="password"
-          className="password"
-          onChange={handlePasswordChange}
-        />
-      </div>
-
-      <div className="app__form-row">
-        <span className="error-message">
-          {registrationErrorMessage ? registrationErrorMessage : ""}
-        </span>
-      </div>
-      <div className="app__form-row">
-        <button onClick={registerUser}>Registration</button>
-      </div>
-    </div>
+        <Form.Group className="mb-3" controlId="formPassword">
+          <Form.Control
+            type="password"
+            name="password"
+            placeholder="Password"
+            onChange={handlePasswordChange}
+          />
+        </Form.Group>
+        <Button block variant="primary" onClick={registerUser}>
+          Registration
+        </Button>
+      </Form>
+    </>
   );
 }
 

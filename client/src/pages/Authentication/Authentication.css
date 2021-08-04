@@ -1,57 +1,22 @@
-.app__loader {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.9);
-    z-index: 1;
-    flex-direction: column;
-    justify-content: center;
-    display: none;
+.authentication-screen {
+  width: 50%;
+  margin: auto;
+  margin-top: 20%;
+  background-color: rgba(0, 123, 255, 0.07);
 }
 
-.app__loader img {
-    width: 60px;
-    height: 60px;
-    margin: auto;
+.auth-form {
+  padding: 5% 0% 0% 0%;
+  border-top: solid 1px #dee2e6;
+  margin-top: 2%;
 }
 
-.app__loader.active {
-    display: flex;
+.nav-pills .nav-link {
+  width: auto;
+  text-align: center;
+  width: 50%;
 }
 
-.app__authentication-container {
-    width: 450px;
-    margin: 0 auto;
-}
-
-.authentication__tab-switcher {
-    width: 100%;
-    text-align: center;
-}
-
-.authentication__tab-viewer {
-    width: 100%;
-}
-
-button.authentication__tab-button {
-    width: 30%;
-    background: #fff;
-    border: 0px;
-    padding: 7px;
-    margin-bottom: 20px;
-    font-size: 20px;
-    cursor: pointer;
-    outline: none;
-    position: relative;
-}
-
-button.active.authentication__tab-button::after {
-    content: '';
-    background: rgb(77, 73, 73);
-    height: 5px;
-    width: 50px;
-    position: absolute;
-    bottom: 0;
-    left: 30%;
-    background-size: inherit;
+.auth-loading {
+  left: 0;
 }

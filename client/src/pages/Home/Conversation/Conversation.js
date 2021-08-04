@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-
+import { Form } from "react-bootstrap";
 import {
   eventEmitter,
   sendWebSocketMessage,
@@ -29,26 +29,29 @@ const scrollMessageContainer = (messageContainer) => {
 
 const getMessageUI = (messageContainer, userDetail, conversations) => {
   return (
-    <ul ref={messageContainer} className="message-thread-container">
-      {conversations.map((conversation, index) => (
-        <li
-          className={`message ${
-            alignMessage(userDetail, conversation.toUserID) ? "align-right" : ""
-          }`}
-          key={index}
-        >
-         
-          {conversation.message}
-        </li>
-      ))}
-    </ul>
+    <>
+      <ul ref={messageContainer} className="message-thread">
+        {conversations.map((conversation, index) => (
+          <li
+            className={`${
+              alignMessage(userDetail, conversation.toUserID)
+                ? "align-right"
+                : ""
+            }`}
+            key={index}
+          >
+            {conversation.message}
+          </li>
+        ))}
+      </ul>
+    </>
   );
 };
 
 const getInitiateConversationUI = (userDetail) => {
   if (userDetail !== null) {
     return (
-      <div className="message-thread-container start-chatting-banner">
+      <div className="message-thread start-chatting-banner">
         <p className="heading">
           You haven 't chatted with {userDetail.username} in a while,
           <span className="sub-heading"> Say Hi.</span>
@@ -139,19 +142,24 @@ function Conversation(props) {
   }
 
   return (
-    <div className="app__conversation-container">
-      {conversations.length > 0
-        ? getMessageUI(messageContainer, userDetail, conversations)
-        : getInitiateConversationUI(selectedUser)}
+    <div
+      className={`message-wrapper ${messageLoading ? "visibility-hidden" : ""}`}
+    >
+      <div className="message-container">
+        {conversations.length > 0
+          ? getMessageUI(messageContainer, userDetail, conversations)
+          : getInitiateConversationUI(selectedUser)}
+      </div>
 
-      <div className="app__text-container">
-        <textarea
+      <div className="message-typer">
+        <Form.Control
+          as="textarea"
           placeholder={`${
             selectedUser !== null ? "" : "Select a user and"
           } Type your message here`}
-          className="text-type"
           onKeyPress={sendMessage}
-        ></textarea>
+        />
+        
       </div>
     </div>
   );

@@ -1,54 +1,30 @@
-.app__home-container {
-    background-color: whitesmoke;
-    display: flex;
-    width: 60%;
-    margin: auto;
-    flex-direction: column;;
+.app-header {
+  background-color: rgba(0, 123, 255, 0.07);
+  padding: 1.5vh 5vh;
+  height: 10vh;
 }
 
-.app__header-container {
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 20px;
-    margin-bottom: 50px;
-    margin-top: 20px;
-    border-bottom: 2px solid transparent;
-    border-color: rgb(11, 77, 11);
-    background-color: whitesmoke;
+.app-header nav {
+  float: left;
 }
 
-.app__header-user {
-    display: flex;
+.content {
+  height: 70vh;
+  margin-top: 5vh;
 }
 
-
-.user-details {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    text-transform: capitalize;
+.chat-content {
+  height: 100%;
 }
 
-.logout {
-    background: gray;
-    padding: 2.5px 5px;
-    font-size: 15px;
-    outline: none;
-    cursor: pointer;
-    border: 2px solid transparent;
-    border-color: rgb(11, 77, 11);
-    border-radius: 50%;
+.chat-list-container {
+  padding: 25px 15px;
+  height: 100%;
+  -webkit-box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1);
 }
 
-.app__content-container {
-    display: flex;
-    width: 100%;
-}
-.app__home-chatlist {
-    flex: 1;
-    margin-right: 30px;
-}
-
-.app__home-message {
-    flex: 2;
+.message-container {
+  height: 100%;
 }

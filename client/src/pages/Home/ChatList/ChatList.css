@@ -1,27 +1,22 @@
-.app__chatlist-container {
-  width: 250px;
-  margin: auto;
-  background-color: whitesmoke;
+.user-list {
+  overflow-y: scroll;
+  padding: 0px;
+  margin: 0px;
+  height: 100%;
+  list-style-type: none;
 }
 
-.user__chat-list {
-  width: 100%;
+.user-list li {
+  padding: 10px 11px;
+  margin-bottom: 10px;
+  text-transform: capitalize;
+  background: rgba(215, 234, 255, 0.28);
 }
 
-.user-name {
-  width: 100%;
-  font-size: 18px;
-  padding: 10px 5px;
-  outline: none;
-  margin-bottom: 20px;
-  cursor: pointer;
-  background-color: rgba(127, 255, 212, 0.33);
-  border: 2px solid transparent;
-  border-color: rgb(5, 70, 5);
-}
-
-.selected-username {
-  background-color: gray;
+.user-list .active {
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1);
+  background: rgba(8, 86, 170, 0.49);
+  border: 0px !important;
 }
 
 .online {
@@ -31,8 +26,6 @@
   background-color: rgb(0, 255, 42);
   float: right;
   margin-top: 0.5vh;
-  margin-right: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.567);
 }
 
 .offline {
@@ -42,6 +35,4 @@
   background-color: rgb(255, 0, 0);
   float: right;
   margin-top: 0.5vh;
-  margin-right: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.567);
 }

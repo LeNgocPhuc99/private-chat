@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router";
+import { Alert, Form, Button } from "react-bootstrap";
 
 import { loginRequest } from "../../../services/api-service";
 import { setItemToSS } from "../../../services/storage-service";
-
-import "./Login.css";
 
 function Login(props) {
   const [loginErrorMessage, setErrorMessage] = useState(null);
@@ -31,30 +30,30 @@ function Login(props) {
   };
 
   return (
-    <div className="app__login-container">
-      <div className="app__form-row">
-        <label>Username: </label>
-        <input type="email" className="email" onChange={handleUsernameChange} />
-      </div>
+    <>
+      <Form className="auth-form">
+        <Form.Group className="mb-3" controlId="loginUsername">
+          <Form.Control
+            type="text"
+            name="username"
+            placeholder="Enter username"
+            onChange={handleUsernameChange}
+          />
+        </Form.Group>
 
-      <div className="app__form-row">
-        <label>Password: </label>
-        <input
-          type="password"
-          className="password"
-          onChange={handlePasswordChange}
-        />
-      </div>
-
-      <div className="app__form-row">
-        <span className="error-message">
-          {loginErrorMessage ? loginErrorMessage : ""}
-        </span>
-      </div>
-      <div className="app__form-row" onClick={loginUser}>
-        <button>Login</button>
-      </div>
-    </div>
+        <Form.Group className="mb-3" controlId="formPassword">
+          <Form.Control
+            type="password"
+            name="password"
+            placeholder="Password"
+            onChange={handlePasswordChange}
+          />
+        </Form.Group>
+        <Button block variant="primary" onClick={loginUser}>
+          Login
+        </Button>
+      </Form>
+    </>
   );
 }
 

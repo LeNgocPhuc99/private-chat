@@ -34,12 +34,11 @@ function ChatList(props) {
     }
 
     // slice is used to create aa new instance of an array
-    if(newChatList !== null) {
+    if (newChatList !== null) {
       setChatList(newChatList.slice());
     } else {
       setChatList([]);
     }
-    
   };
 
   useEffect(() => {
@@ -66,25 +65,35 @@ function ChatList(props) {
     );
   }
 
+  if (chatList && chatList.length === 0) {
+    return (
+      <div className="alert">
+        {chatList.length === 0
+          ? "Loading your chat list."
+          : "No User Available to chat."}
+      </div>
+    );
+  }
+
   return (
-    <div className="app__chatlist-container">
-      <div className="user__chat-list">
+    <>
+      <ul
+        className={`user-list ${
+          chatList.length === 0 ? "visibility-hidden" : ""
+        }`}
+      >
         {chatList.map((user, index) => (
-          <div
+          <li
             key={index}
-            className={`user-name ${
-              selectedUser !== null && selectedUser.userID === user.userID
-                ? "selected-username"
-                : ""
-            }`}
+            className={selectedUser !== null && selectedUser.userID === user.userID ? "active" : ""}
             onClick={() => updateSelectedUser(user)}
           >
             {user.username}
             <span className={user.online === "Y" ? "online" : "offline"}></span>
-          </div>
+          </li>
         ))}
-      </div>
-    </div>
+      </ul>
+    </>
   );
 }
 

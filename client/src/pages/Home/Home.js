@@ -67,43 +67,46 @@ const logoutUser = (props, userDetail) => {
 function Home(props) {
   const [userDetail, internalErr] = useFetch(props);
   const [selectedUser, setSelectedUser] = useState(null);
-  
+
   if (internalErr !== null) {
     return <h1>{internalErr}</h1>;
   }
 
   return (
-    <div className="app__home-container">
-      <header className="app__header-container">
-        <nav className="app__header-user">
-          <div className="user-detail">
-            <h4>{getUsername(userDetail)}</h4>
-          </div>
+    <div className="App">
+      <header className="app-header">
+        <nav className="navbar navbar-expand-md">
+          <h4>Hello {getUsername(userDetail)}</h4>
         </nav>
-        <button
-          className="logout"
-          onClick={() => {
-            logoutUser(props, userDetail);
-          }}
-        >
-          Logout
-        </button>
+        <ul className="nav justify-content-end">
+          <li className="nav-item">
+            <button
+              class="btn btn-outline-primary"
+              onClick={() => {
+                logoutUser(props, userDetail);
+              }}
+            >
+              Logout
+            </button>
+          </li>
+        </ul>
       </header>
 
-      <div className="app__content-container">
-        <div className="app__hone-chatlist">
-          <ChatList
-            setSelectedUser={(user) => {
-              setSelectedUser(user);
-            }}
-            userDetail={userDetail}
-          />
+      <main role="main" className="container content">
+        <div className="row chat-content">
+          <div className="col-3 chat-list-container">
+            <ChatList
+              setSelectedUser={(user) => {
+                setSelectedUser(user);
+              }}
+              userDetail={userDetail}
+            />
+          </div>
+          <div className="col-8 message-container">
+            <Conversation userDetail={userDetail} selectedUser={selectedUser} />
+          </div>
         </div>
-
-        <div className="app__home-message">
-          <Conversation userDetail={userDetail} selectedUser={selectedUser} />
-        </div>
-      </div>
+      </main>
     </div>
   );
 }
