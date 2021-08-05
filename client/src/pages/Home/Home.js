@@ -81,7 +81,7 @@ function Home(props) {
         <ul className="nav justify-content-end">
           <li className="nav-item">
             <button
-              class="btn btn-outline-primary"
+              className="btn btn-outline-primary"
               onClick={() => {
                 logoutUser(props, userDetail);
               }}

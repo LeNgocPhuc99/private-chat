@@ -96,5 +96,6 @@ export function emitLogoutEvent() {
     return;
   }
 
+  console.log("logout event");
   webSocketConnection.close();
 }
