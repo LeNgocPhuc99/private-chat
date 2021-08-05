@@ -62,6 +62,12 @@ function Registration(props) {
             onChange={handlePasswordChange}
           />
         </Form.Group>
+
+        <Form.Group className="mb-3" controlId="errorMessage">
+          <Form.Text style={{color: "red"}}>
+            {registrationErrorMessage ? registrationErrorMessage : ""}
+          </Form.Text>
+        </Form.Group>
         <Button block variant="primary" onClick={registerUser}>
           Registration
         </Button>

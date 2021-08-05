@@ -20,3 +20,7 @@
 .auth-loading {
   left: 0;
 }
+
+.error-message {
+  color: red;;
+}

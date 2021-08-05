@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router";
-import { Alert, Form, Button } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 
 import { loginRequest } from "../../../services/api-service";
 import { setItemToSS } from "../../../services/storage-service";
@@ -48,6 +48,10 @@ function Login(props) {
             placeholder="Password"
             onChange={handlePasswordChange}
           />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="errorMessage">
+          <Form.Text style={{color: "red" }}>{loginErrorMessage ? loginErrorMessage : ""}</Form.Text>
         </Form.Group>
         <Button block variant="primary" onClick={loginUser}>
           Login
