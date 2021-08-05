@@ -122,6 +122,30 @@ func UserLoginCheck(rw http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Check whether usernam exist or not
+func RegistrationCheck(rw http.ResponseWriter, r *http.Request) {
+	username := mux.Vars(r)["username"]
+	_, err := GetUserByUsername(username)
+	if err == nil {
+		response := APIResponse{
+			Code:     http.StatusOK,
+			Status:   http.StatusText(http.StatusOK),
+			Message:  UsernameIsNotAvailable,
+			Response: false,
+		}
+		Response(rw, r, response)
+	} else {
+		response := APIResponse{
+			Code:     http.StatusOK,
+			Status:   http.StatusText(http.StatusOK),
+			Message:  UsernameIsAvailable,
+			Response: true,
+		}
+		Response(rw, r, response)
+	}
+
+}
+
 func GetAllUserAllOnline(rw http.ResponseWriter, r *http.Request) {
 	userID := mux.Vars(r)["userID"]
 	listOnlineUser, err := GetAllOnlineUser(userID)

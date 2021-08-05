@@ -2,12 +2,10 @@ package handlers
 
 const (
 	// Request Paramyter Validation error/success messages
-	UsernameCantBeEmpty            = "username can't be empty"
-	UsernameIsAvailable            = "username is available."
+	UsernameAndPasswordCantBeEmpty = "username and password can't empty"
 	UsernameIsNotAvailable         = "username is not available"
+	UsernameIsAvailable            = "username is available"
 	UserIdIsNotAvailable           = "userID is not available"
-	PasswordCantBeEmpty            = "password can't be empty"
-	UsernameAndPasswordCantBeEmpty = "username and Password can't be empty"
 	LoginPasswordIsInCorrect       = "your Login Password is incorrect"
 	UserRegistrationCompleted      = "user Registration Completed"
 	UserLoginCompleted             = "user Login is Completed"

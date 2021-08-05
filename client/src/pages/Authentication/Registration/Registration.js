@@ -3,7 +3,7 @@ import { withRouter } from "react-router";
 import { DebounceInput } from "react-debounce-input";
 import { Form, Button } from "react-bootstrap";
 
-import { registerRequest } from "../../../services/api-service";
+import { registerRequest, usernameRegistrationCheckRequest } from "../../../services/api-service";
 import { setItemToSS } from "../../../services/storage-service";
 
 function Registration(props) {
@@ -40,6 +40,13 @@ function Registration(props) {
         setErrorMessage(
           "Your username is not valid. Only characters A-Z, a-z and 0-9 are  acceptable."
         );
+        return;
+      }
+
+      // check whether username exist or not
+      const isValidUsername =  await usernameRegistrationCheckRequest(username);
+      if(!isValidUsername.response) {
+        setErrorMessage("Your username is registered");
         return;
       }
       // request to server

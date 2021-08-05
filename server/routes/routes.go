@@ -32,6 +32,8 @@ func NewRoutes() *mux.Router {
 
 	route.HandleFunc("/registration", myHandler.Registration).Methods(http.MethodPost, http.MethodOptions)
 
+	route.HandleFunc("/usernameRegistrationCheck/{username}", myHandler.RegistrationCheck).Methods(http.MethodGet, http.MethodOptions)
+
 	route.HandleFunc("/userLoginCheck/{userID}", myHandler.UserLoginCheck).Methods(http.MethodGet, http.MethodOptions)
 
 	route.HandleFunc("/getAllOnlineUser/{userID}", myHandler.GetAllUserAllOnline).Methods(http.MethodGet, http.MethodOptions)

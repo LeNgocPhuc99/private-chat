@@ -40,6 +40,17 @@ export async function userLoginCheckRequest(userID) {
   return await response.json();
 }
 
+export async function usernameRegistrationCheckRequest(username) {
+  const response = await fetch(`${API_ENDPOINTS}/usernameRegistrationCheck/${username}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return await response.json();
+}
+
 export async function getConversationBetweenUsers(fromUserID, toUserID) {
   const response = await fetch(
     `${API_ENDPOINTS}/getConversation/${fromUserID}/${toUserID}`,
